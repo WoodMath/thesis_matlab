@@ -1,10 +1,11 @@
 clear
 
-i_dir = 4;
+i_dir = 3;
 i_prefix = 8;
-i_source = 2;
+i_ext = 3;
+i_source = 5;
 i_dest = 1;
-i_ext = 2;
+
 
 %% Directory option (i_dir)
 s_dir = { ...
@@ -47,28 +48,28 @@ disp(s_source)
 disp(s_dest)
 
 
-fig_source = figure(i_source);
+fig_source = sfigure(i_source);
+% set(fig_source,'WindowStyle','modal');
 imshow(im_source);
 axis ij;
 
-fig_dest = figure(i_dest);
+fig_dest = sfigure(i_dest);
+% set(fig_dest,'WindowStyle','modal');
 imshow(im_dest);
 axis ij;
 
 s_input = '';
-% while(~strcmpi(s_input,'e'))
-    
-    hold on
-    s_prompt = ' Make selection: (N)ew, (D)elete, (E)end, or (S)kip : ';
-    s_input = input(s_prompt,'s');
-    if isempty(s_input)
-        s_input = 'e';
-    end
-    if(strcmpi(s_input,'n'))
-%         figure(fig_dest);
-%         [x,y] = getpts(gcf);
-%         [x,y,b] = ginput(1);
-        [source,dest]= fnMovePoint(fig_source, fig_dest);
-    end
+% while(~strcmpi(s_input,'e'))  
+%     hold on
+%     s_prompt = ' Make selection: (N)ew, (D)elete, (E)end, or (S)kip : ';
+%     s_input = input(s_prompt,'s');
+%     if isempty(s_input)
+%         s_input = 'e';
+%     end
+%     if(strcmpi(s_input,'n'))
+%         [source,dest]= fnMovePoint(fig_source, fig_dest);
+%     end
 % end
-% [source,dest]= fnMovePoint(fig_source, fig_dest);
+
+[source,dest] = fnMovePoint(fig_source, fig_dest)
+
