@@ -1,18 +1,22 @@
 function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest)
 %fnMenuDelete deletes a selected point from st_data
 %   Detailed explanation goes here
-
+    global i_insert;
 
     if(isempty(st_data.Points(1).Source) || isempty(st_data.Points(1).Destination))
         return;
     end
     
+    fnUpdate(fig_source, fig_dest);
     st_source = st_data.Source;
     st_dest = st_data.Destination;
     st_points = st_data.Points;
     
-    disp('   *** Selecting point to Delete *** ');
+    disp('   *** Select point to Delete *** ');
+    
+    i_insert = 0;
     while(~(strcmpi(get(gco,'type'),'line')))
+        fnUpdate(fig_source, fig_dest);
         pause(1);
     end
 

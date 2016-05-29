@@ -7,6 +7,12 @@ function fnImageClickUp ( objectHandle , eventData )
     global arr_start, global arr_stop;
     global h_source, global h_dest;
     global ax_source, global ax_dest;
+    global i_insert;
+    
+    %% If not on insert, exit out
+    if(i_insert == 0)
+        return
+    end
 
     %% Image being clicked on is not source
     if(not(gcf == h_source))

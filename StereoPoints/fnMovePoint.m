@@ -28,14 +28,17 @@ function [v_source, v_dest] = fnMovePoint(fig_source, fig_dest)
 
 
     
-    global i_button_down; % 0 = pre-press ; 1 = in-press ; 2 = post-press
+    global i_button_down;       % 0 = pre-press ; 1 = in-press ; 2 = post-press
+    global i_insert;            % 0 = non-insert ; 1 = insert
     
     s_input = '';           % Continue in loop
     s_YN = 'n';
 
 
-
+    i_insert = 1;
     while(strcmpi(s_YN,'n'))
+        fnUpdate(h_source, h_dest);
+        
         figure(h_dest);
         hold on;
         
@@ -44,11 +47,14 @@ function [v_source, v_dest] = fnMovePoint(fig_source, fig_dest)
         i_button_down = 0; % State of Mouse Button
 
         %% Loop until mouse button has been clicked and released
-        disp('   *** Selecting point to Delete *** ');
+        disp('   *** Select point to Insert *** ');
         while(i_button_down<2)
+            fnUpdate(h_source, h_dest);
             pause(1);
         end
-    
+        
+        fnUpdate(h_source, h_dest);
+        
         s_YN = input('   Accept offset vector? (y/n) ', 's');
         if(strcmpi(s_YN, 'n'))
             if(~isempty(h_line))
@@ -60,6 +66,7 @@ function [v_source, v_dest] = fnMovePoint(fig_source, fig_dest)
             
         end
     end
+    i_insert = 0;
     
 %     %% Mouse Down
 %     function ImageClickDown ( objectHandle , eventData )

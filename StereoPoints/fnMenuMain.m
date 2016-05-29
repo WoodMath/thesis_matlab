@@ -22,14 +22,12 @@ function [ st_data ] = fnMenuMain( )
                 [st_data] = fnMenuDataset(st_data, fig_source, fig_dest);
                 s_input='';
             case {'l', 'L'}
-                s_filename = input('   Type the path/name of the file to load : ', 's');
-                [st_data] = fnMenuLoad(s_filename);
+                [st_data] = fnMenuLoad();
                 [fig_source, fig_dest, st_data] = fnMenuDisplay(st_data);
                 [st_data] = fnMenuDataset(st_data, fig_source, fig_dest);
                 s_input='';
             case {'s', 'S'}
-                s_filename = input('   Type the path/name of the file to load : ', 's');
-                fnMenuSave(s_filename, st_data);
+                fnMenuSave(st_data);
                 [st_data] = fnMenuDataset(st_data, fig_source, fig_dest);
                 s_input='';
             case {'q', 'Q'}

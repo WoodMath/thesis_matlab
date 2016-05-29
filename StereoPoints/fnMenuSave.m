@@ -1,6 +1,8 @@
-function [  ] = fnMenuSave( s_filename, data )
+function [  ] = fnMenuSave( data )
 %fnMenuSave Summary of this function goes here
 %   Detailed explanation goes here
+
+    s_filename = input('   Type the path/name of the file to save : ', 's');
     save(s_filename, 'data');
 
     disp(['   *** Save file ''', s_filename, ''' completed *** ']);
