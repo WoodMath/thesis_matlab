@@ -1,9 +1,11 @@
-function [ st_data ] = fnMenuMain( )
+function [ st_data, fig_source, fig_dest ] = fnMenuMain( )
 %fnMenuMain main menu for the program
 %   Detailed explanation goes here
 
     s_input = '';
     st_data = [];
+    fig_source = [];
+    fig_dest = [];
    
     while(~(strcmpi(s_input,'new') || strcmpi(s_input,'n') || strcmpi(s_input,'load') || strcmpi(s_input,'l') || strcmpi(s_input,'save') || strcmpi(s_input,'s') || strcmpi(s_input,'quit') || strcmpi(s_input,'q')))  
         disp('   What do you want to do with the dataset :');
@@ -31,7 +33,7 @@ function [ st_data ] = fnMenuMain( )
                 [st_data] = fnMenuDataset(st_data, fig_source, fig_dest);
                 s_input='';
             case {'q', 'Q'}
-                close all;
+%                 close all;
                 return;
             otherwise
                 warning('    *** Please make an appropriate selection *** ');
