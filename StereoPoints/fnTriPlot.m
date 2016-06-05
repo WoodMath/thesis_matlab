@@ -1,4 +1,4 @@
-function [ ] = fnTriPlot( mat_index, v_x, v_y )
+function [ ] = fnTriPlot( mat_index, v_x, v_y, varargin )
 %fnTriPlot same as 'triplot' but does n current figur
 %   Detailed explanation goes here
 
@@ -20,9 +20,14 @@ function [ ] = fnTriPlot( mat_index, v_x, v_y )
             error([' Index of ', max(idx_tri), ' is greater than size of ''x'' and ''y'' vectors']);
         end
         mat_pts = [v_x(idx_tri'), v_y(idx_tri')];
-        line(mat_pts([1,2],1), mat_pts([1,2],2));
-        line(mat_pts([2,3],1), mat_pts([2,3],2));
-        line(mat_pts([3,1],1), mat_pts([3,1],2));
+        if(length(varargin) == 0)
+            c = 'blue';
+        else
+            c = varargin{1};
+        end
+        line(mat_pts([1,2],1), mat_pts([1,2],2), 'color', c);
+        line(mat_pts([2,3],1), mat_pts([2,3],2), 'color', c);
+        line(mat_pts([3,1],1), mat_pts([3,1],2), 'color', c);
 
     end
 
