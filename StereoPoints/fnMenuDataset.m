@@ -29,18 +29,7 @@ function [ st_data ] = fnMenuDataset(st_data, fig_source, fig_dest)
         end
         switch s_input(1)
             case {'i', 'I'}
-                %% Get poiint
-                [v_source, v_dest, h_point_source, h_point_dest] = fnMenuInsert(fig_source, fig_dest);
-                %% Append point
-                if(isempty(st_data.Points(1).Source) && isempty(st_data.Points(1).Destination))
-                    st_data.Points(1).Source = v_source;
-                    st_data.Points(1).Destination = v_dest;
-                    st_data.Points(1).handleSource = h_point_source;
-                    st_data.Points(1).handleDest = h_point_dest;
-                else
-                    i_count = length(st_data.Points);
-                    st_data.Points(i_count+1) = struct('Source', v_source, 'Destination', v_dest, 'handleSource', h_point_source, 'handleDestination', h_point_dest);
-                end
+                [st_data] = fnMenuInsert(st_data, fig_source, fig_dest);
                 s_input = '';           % Continue in loop
             case {'d', 'D'}
                 [st_data] = fnMenuDelete(st_data, fig_source, fig_dest)

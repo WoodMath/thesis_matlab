@@ -32,6 +32,7 @@ function [st_data] = fnMenuEdit(st_data, fig_source, fig_dest)
         disp('          (I)nsert offset vector');
         disp('          (D)elete offset vector');
         disp('          (B)ack');
+        disp('                ');
         
         w = waitforbuttonpress;
         
