@@ -4,8 +4,9 @@ function [ st_data ] = fnMenuDataset(st_data, fig_source, fig_dest)
 
     s_input = '';
     
-    while(~(strcmpi(s_input,'insert') || strcmpi(s_input,'i') || strcmpi(s_input,'delete') || strcmpi(s_input,'d') || strcmpi(s_input,'clear') || strcmpi(s_input,'c') || strcmpi(s_input,'refresh') || strcmpi(s_input,'r') || strcmpi(s_input,'main') || strcmpi(s_input,'m'))) 
+    while(~(strcmpi(s_input,'insert') || strcmpi(s_input,'i') || strcmpi(s_input,'insert') || strcmpi(s_input,'i') || strcmpi(s_input,'delete') || strcmpi(s_input,'d') || strcmpi(s_input,'clear') || strcmpi(s_input,'c') || strcmpi(s_input,'refresh') || strcmpi(s_input,'r') || strcmpi(s_input,'main') || strcmpi(s_input,'m'))) 
         disp('   What do you want to do with the dataset :');
+        disp('          (E)dit by speed');
         disp('          (I)nsert offset vector');
         disp('          (D)elete offset vector');
         disp('          (C)lear offset vectors');

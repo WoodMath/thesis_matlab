@@ -2,6 +2,9 @@ function [ fig_source, fig_dest, st_data ] = fnMenuDisplay(st_data)
 %fnMenuDesiplay Loads data into figures
 %   returns handles of figures
 
+%   Taken from:
+%       http://stackoverflow.com/questions/16613252/how-to-use-keypressfcn-in-matlab-with-a-function-already-create
+%       http://www.mathworks.com/help/matlab/ref/figure-properties.html#zmw57dd0e240226
     close all;
 
     if(length(st_data.Source.ImageData) > 0)

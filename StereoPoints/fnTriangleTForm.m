@@ -19,6 +19,13 @@ function [ tf_out ] = fnTriangleTForm( v2_in, v2_out )
     v3_out = horzcat(v2_out, ones(size(v3_in,1),1));
     
     v3_inv = ((v3_out')/(v3_in'))';
+%     v3_inv(1:2,3) = round(v3_inv(1:2,3));
+    v3_inv(:,3) = round(v3_inv(:,3));
+
+%     display(' **** ');
+%     display(v3_in);
+%     display(v3_out);
+%     display(v3_inv);
     tf_out = affine2d(v3_inv);
 
 end

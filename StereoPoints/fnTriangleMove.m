@@ -1,5 +1,5 @@
-function [ img_out, img_in ] = fnMoveTriangle( img_in, v2_in, v2_out )
-%fnMoveTriangle Summary of this function goes here
+function [ img_out, img_in ] = fnTriangleMove( img_in, v2_in, v2_out )
+%fnTriangleMove Summary of this function goes here
 %   Detailed explanation goes here
 
 
@@ -23,7 +23,7 @@ function [ img_out, img_in ] = fnMoveTriangle( img_in, v2_in, v2_out )
     imref2dObject = imref2d(size(img_in), xWorldLimits, yWorldLimits);
     
     
-    [img_out, ref] = imwarp(img_in, tform, 'cubic', 'OutputView', imref2dObject);
+    [img_out, ref] = imwarp(img_in, tform, 'linear', 'OutputView', imref2dObject);
     
     img_in = img_in.*mat_in;
     img_out = img_out.*mat_out;
