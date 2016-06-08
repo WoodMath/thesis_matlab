@@ -5,7 +5,6 @@ function fnImageKeyUp ( objectHandle , eventData )
     
     global i_operation;
     global b_state_change;
-    disp(' key up')
 
     %% If not on edit, exit out
     if(b_edit == false)

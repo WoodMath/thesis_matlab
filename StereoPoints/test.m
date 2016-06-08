@@ -32,12 +32,15 @@ vIDX_source = delaunay(vCR_source_use);
 
 sfigure(fig_source);
 fnTriPlot(vIDX_source, vCR_source_use(:,1), vCR_source_use(:,2), 'blue');
+saveas(fig_source, 'result_source.png');
+
 
 vRC_dest_use = [vRC_dest; v_append];
 vCR_dest_use = [vRC_dest_use(:,2), vRC_dest_use(:,1)];
 
 sfigure(fig_dest);
 fnTriPlot(vIDX_source, vCR_dest_use(:,1), vCR_dest_use(:,2), 'red');
+saveas(fig_dest, 'results_destination.png');
 
 im_disp = imread('./tsukuba/truedisp.row3.col3.pgm');
 figure(3);
@@ -53,12 +56,13 @@ imshow(im_mid);
 set(gca, 'Visible', 'on');
 
 
-return
+% return
 v_sets = 0:10;
 
 for i_inc = [v_sets]
 
     [img_t] = fnImageInterpolate(st_out,double(i_inc/max(v_sets)));
     s_save = sprintf('result_%02d.png',i_inc);
+    disp([' Saving image ''', s_save, '''']);
     imwrite(img_t, s_save);
 end

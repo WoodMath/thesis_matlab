@@ -2,7 +2,7 @@ function fnImageKeyDown ( objectHandle , eventData )
 
     global b_edit;
     global i_key_state;
-    disp(' key down')
+
     %% If not on edit, exit out
     if(b_edit == false)
         return
