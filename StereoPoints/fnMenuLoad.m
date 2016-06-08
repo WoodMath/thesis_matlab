@@ -3,6 +3,7 @@ function [ data ] = fnMenuLoad()
 %   Detailed explanation goes here
     data = [];
 
+    commandwindow;
     s_filename = input('   Type the path/name of the file to load : ', 's');
     
     try

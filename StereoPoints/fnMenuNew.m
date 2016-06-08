@@ -14,6 +14,7 @@ function [st_data] = fnMenuNew()
         disp('          (M)ain Menu');
         disp('            ');
         s_prompt = '    Please make selection : ';
+        commandwindow;
         s_input = input(s_prompt,'s');
         
         switch s_input(1)

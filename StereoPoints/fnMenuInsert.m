@@ -1,8 +1,15 @@
-function [st_data] = fnMenuInsert(st_data, fig_source, fig_dest)
+function [st_data] = fnMenuInsert(st_data, fig_source, fig_dest, b_verbose)
 %fnMovePoint used to create offset vectors
 %   Creates a blue line on 'fig_source'
 %   with a red dot on the corresponind position on 'fig
 %   returns are in [Row, Column] format
+
+
+    global i_operation;     % Use i_operation=1 for insert, i_operation=2 for delete, i_operation=0 for quit
+
+    if(i_operation ~= 1)
+        return;
+    end
 
     %% Make figure handles global to handle between callbacks
     global h_source, global h_dest;
@@ -38,7 +45,10 @@ function [st_data] = fnMenuInsert(st_data, fig_source, fig_dest)
     i_insert = 1;
     while(strcmpi(s_YN,'n'))
         fnUpdate(h_source, h_dest);
-        
+        if(i_operation ~=1)
+            i_insert = 0;
+            return;
+        end        
         figure(h_dest);
         hold on;
         
@@ -50,20 +60,29 @@ function [st_data] = fnMenuInsert(st_data, fig_source, fig_dest)
         disp('   *** Select point to Insert *** ');
         while(i_button_down<2)
             fnUpdate(h_source, h_dest);
+            
+            if(i_operation ~=1)
+                i_insert = 0;
+                return;
+            end
             pause(1);
         end
         
         fnUpdate(h_source, h_dest);
         
-        s_YN = input('   Accept offset vector? (y/n) ', 's');
-        if(strcmpi(s_YN, 'n'))
-            if(~isempty(h_line))
-                delete(h_line)
+        if(b_verbose)
+            commandwindow;
+            s_YN = input('   Accept offset vector? (y/n) ', 's');
+            if(strcmpi(s_YN, 'n'))
+                if(~isempty(h_line))
+                    delete(h_line)
+                end
+                if(~isempty(h_point))
+                    delete(h_point)
+                end
             end
-            if(~isempty(h_point))
-                delete(h_point)
-            end
-            
+        else
+            s_YN = 'y';
         end
     end
     i_insert = 0;

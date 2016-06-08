@@ -3,6 +3,7 @@ function [ st_out ] = fnMenuNewImage()
 %   Detailed explanation goes here
 
     s_prompt = 'Relative path of image : ';
+    commandwindow;
     s_filename = input(s_prompt,'s');
     try
         im_data = imread(s_filename);  

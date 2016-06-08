@@ -1,7 +1,12 @@
-function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest)
+function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest, b_verbose)
 %fnMenuDelete deletes a selected point from st_data
 %   Detailed explanation goes here
     global i_insert;
+    global i_operation;     % Use i_operation=1 for insert, i_operation=2 for delete, i_operation=0 for quit
+
+    if(i_operation ~= 2)
+        return;
+    end
 
     if(isempty(st_data.Points(1).Source) || isempty(st_data.Points(1).Destination))
         return;
@@ -17,12 +22,18 @@ function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest)
     i_insert = 0;
     while(~(strcmpi(get(gco,'type'),'line')))
         fnUpdate(fig_source, fig_dest);
+        if(i_operation ~=2)
+            return;
+        end
         pause(1);
     end
 
-    s_input = input('   Are you sure you wish to delete? (y/n) ', 's');
-    if(strcmpi(s_input,'n'))
-        return
+    if(b_verbose)
+        commandwindow;
+        s_input = input('   Are you sure you wish to delete? (y/n) ', 's');
+        if(strcmpi(s_input,'n'))
+            return
+        end
     end
     
     ax_source = findobj(fig_source,'type','axes');
@@ -36,15 +47,18 @@ function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest)
     mat_point = repmat(v_point, i_count, 1);
    
     %% Finds index of matching element
-    if(get(gco,'parent') == ax_source)
+    h_parent = get(gco,'parent');
+    if(get(gco,'parent') == ax_source || get(gco,'parent') == fig_source)
         b_index = uint8(prod(uint8(mat_point == mat_source), 2));
         i_index = find(b_index);
     end
     
-    if(get(gco,'parent') == ax_dest)
+    if(get(gco,'parent') == ax_dest || get(gco,'parent') == fig_source)
         b_index = uint8(prod(uint8(mat_point == mat_dest), 2));
         i_index = find(b_index);
     end
+    %% Set back to parent so their is no loop
+    gco(h_parent);
     
     v_indices = zeros(i_count, 1, 'uint64');
     v_indices(i_index) = 1;

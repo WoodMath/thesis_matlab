@@ -15,6 +15,7 @@ function [ st_data, fig_source, fig_dest ] = fnMenuMain( )
         disp('          (Q)uit');
         disp('            ');
         s_prompt = '   Please make selection : ';
+        commandwindow;
         s_input = input(s_prompt,'s');
         
         switch s_input(1)

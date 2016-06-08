@@ -24,20 +24,70 @@ function [st_data] = fnMenuEdit(st_data, fig_source, fig_dest)
         
     global i_button_down;       % 0 = pre-press ; 1 = in-press ; 2 = post-press
     global i_insert;            % 0 = non-insert ; 1 = insert
-    global i_edit;
-    b_loop = true;
-    
-    while(b_loop)
-        disp('   Type :');
-        disp('          (I)nsert offset vector');
-        disp('          (D)elete offset vector');
-        disp('          (B)ack');
-        disp('                ');
-        
-        w = waitforbuttonpress;
-        
+    global i_delete;
+    global b_edit;
+    global b_wait;
+    global b_state_change;
+    global i_operation;     % Use i_operation=1 for insert, i_operation=2 for delete, i_operation=0 for quit
+    global i_key_state;     % Us i_key_state=0 for null, i_key_state=1 for press, i_key_state=2 for release
+
+    i_operation = 1;
+    b_edit = true;          % Used for key listening
+    b_state_change = true;
+    i_key_state = 0;
+    while(logical(i_operation))
+        if(b_state_change)
+            disp('   Type :');
+            disp('          (I)nsert offset vector');
+            disp('          (D)elete offset vector');
+            disp('          (B)ack');
+            disp('                ');
+            b_state_change = false;
+        end
+
+        while(~b_state_change)
+            %% Wait for inputs
+            pause(1);
+            
+            if(i_operation == 1)
+                [st_data] = fnMenuInsert(st_data, fig_source, fig_dest, false);
+                if(i_operation ~= 1 || i_operation == 0)
+                    b_state_change = true;
+                    break;
+                else
+                    b_state_change = false;
+                end
+            end
+            if(i_operation == 2)
+                [st_data] = fnMenuDelete(st_data, fig_source, fig_dest, false);
+                if(i_operation ~= 2 || i_operation == 0)
+                    b_state_change = true;
+                    break;
+                else
+                    b_state_change = false;
+                end
+            end
+            
+            %% Reset key state aftr press
+            if(i_key_state == 2);
+                i_key_state = 0;
+            end
+            if(i_operation == 0)
+                b_edit = false;
+                return;
+            end
+        end
+        %% Reset key state aftr press
+        if(i_key_state == 2);
+            i_key_state = 0;
+        end
+        if(i_operation == 0)
+            b_edit = false;
+            return;
+        end
         
     end
+    b_edit = false;
 
 
 end

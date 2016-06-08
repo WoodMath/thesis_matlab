@@ -67,12 +67,27 @@ function [ fig_source, fig_dest, st_data ] = fnMenuDisplay(st_data)
 
     end
 
+    if(length(st_data.Destination.ImageData) > 0)
+        figure(fig_dest)
+        %% Set callback functions
+        set(gcf, 'WindowKeyPressFcn', @fnImageKeyDown);
+        set(gcf, 'WindowKeyReleaseFcn', @fnImageKeyUp);
+%         set(gcf, 'KeyPressFcn', @fnImageKeyDown);
+%         set(gcf, 'KeyReleaseFcn', @fnImageKeyUp);        
+    end
+    
     if(length(st_data.Source.ImageData) > 0)
         figure(fig_source);
         %% Set callback functions
+        set(gcf, 'WindowKeyPressFcn', @fnImageKeyDown);
+        set(gcf, 'WindowKeyReleaseFcn', @fnImageKeyUp);
+%         set(gcf, 'KeyPressFcn', @fnImageKeyDown);
+%         set(gcf, 'KeyReleaseFcn', @fnImageKeyUp);        
+
         set(gcf, 'WindowButtonDownFcn', @fnImageClickDown);
         set(gcf, 'WindowButtonUpFcn', @fnImageClickUp);
         set(gcf, 'WindowButtonMotionFcn', @fnImageClickMove);
+        
     end
     
 end
