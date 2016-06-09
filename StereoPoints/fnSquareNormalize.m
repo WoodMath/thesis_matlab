@@ -1,0 +1,13 @@
+function [ img_out ] = fnSquareNormalize( img_in )
+%fnSquareNormalize converts image to range (0,255)
+%   Detailed explanation goes here
+
+    img_temp = img_in.^2;
+    
+    img_temp = img_temp - repmat(min(min(img_temp)), [size(img_temp,1), size(img_temp,2), 1]);
+    img_temp = img_temp./repmat(max(max(img_temp)), [size(img_temp,1), size(img_temp,2), 1]);
+    img_out = uint8(img_temp*255);
+
+
+end
+

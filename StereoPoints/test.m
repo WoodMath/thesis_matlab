@@ -2,13 +2,16 @@ clear all;
 close all;
 
 %% Add Points
-st_out = fnMenuMain();
+% st_out = fnMenuMain();
 
 if(~exist('st_out'))
     load('tsukuba');
     st_out = data;
     clear('data')
 end
+
+im_source = st_out.Source.ImageData;
+im_dest = st_out.Destination.ImageData;
 
 if(~exist('fig_source') || ~exist('fig_dest'))
     [fig_source, fig_dest, st_out] = fnMenuDisplay(st_out);
