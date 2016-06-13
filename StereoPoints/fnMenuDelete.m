@@ -8,6 +8,10 @@ function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest, b_verbose)
         return;
     end
 
+    if(isempty(st_data.Points))
+        return;
+    end    
+    
     if(isempty(st_data.Points(1).Source) || isempty(st_data.Points(1).Destination))
         return;
     end
@@ -53,7 +57,7 @@ function [st_data] = fnMenuDelete(st_data, fig_source, fig_dest, b_verbose)
         i_index = find(b_index);
     end
     
-    if(get(gco,'parent') == ax_dest || get(gco,'parent') == fig_source)
+    if(get(gco,'parent') == ax_dest || get(gco,'parent') == fig_dest)
         b_index = uint8(prod(uint8(mat_point == mat_dest), 2));
         i_index = find(b_index);
     end

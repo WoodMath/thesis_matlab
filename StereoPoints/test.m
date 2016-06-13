@@ -2,8 +2,10 @@ clear all;
 close all;
 
 %% Add Points
-% st_out = fnMenuMain();
+st_out = fnMenuMain();
 
+
+return;
 if(~exist('st_out'))
     load('tsukuba');
     st_out = data;

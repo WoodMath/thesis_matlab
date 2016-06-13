@@ -203,13 +203,17 @@ function [st_data] = fnMenuInsert(st_data, fig_source, fig_dest, b_verbose)
     h_point_dest = plot(v_dest(1,2), v_dest(1,1), 'sr', 'MarkerSize', 5, 'MarkerEdgeColor', 'r', 'MarkerFaceColor', 'r');
     hold off
             
-    if(isempty(st_data.Points(1).Source) && isempty(st_data.Points(1).Destination))
+    if(isempty(st_data.Points) || (isempty(st_data.Points(1).Source) && isempty(st_data.Points(1).Destination)))
         st_data.Points(1).Source = v_source;
         st_data.Points(1).Destination = v_dest;
         st_data.Points(1).handleSource = h_point_source;
-        st_data.Points(1).handleDest = h_point_dest;
+        st_data.Points(1).handleDestination = h_point_dest;
     else
         i_count = length(st_data.Points);
-        st_data.Points(i_count+1) = struct('Source', v_source, 'Destination', v_dest, 'handleSource', h_point_source, 'handleDestination', h_point_dest);
+%         st_data.Points(i_count+1) = struct('Source', v_source, 'Destination', v_dest, 'handleSource', h_point_source, 'handleDestination', h_point_dest);
+        st_data.Points(i_count+1).Source = v_source;
+        st_data.Points(i_count+1).Destination = v_dest;
+        st_data.Points(i_count+1).handleSource = h_point_source;
+        st_data.Points(i_count+1).handleDestination = h_point_dest;
     end
 end
