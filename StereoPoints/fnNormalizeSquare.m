@@ -1,9 +1,9 @@
-function [ img_out ] = fnSquareNormalize( img_in )
-%fnSquareNormalize converts image to range (0,255)
+function [ img_out ] = fnNormalizeSquare( img_in )
+%fnNormalizeSquare converts image to range (0,255)
 %   Detailed explanation goes here
 
     img_temp = img_in.^2;
-    
+
 %     img_out = im2uint8(uint16(img_temp));
 %     return;
     
