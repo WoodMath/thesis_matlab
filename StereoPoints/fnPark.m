@@ -67,8 +67,8 @@ function [  ] = fnPark( img_one, img_two, vRC_blocks )
             img_temp_one = img_one_bw_grad(v_rows,v_cols);
             img_temp_two = img_two_bw_grad(v_rows,v_cols);
             
-            struct_one = struct('ImageData',img_one_bw(v_rows,v_cols),'GradientData',img_temp_one);
-            struct_two = struct('ImageData',img_two_bw(v_rows,v_cols),'GradientData',img_temp_two);
+            struct_one = struct('ImageData',img_one_bw(v_rows,v_cols),'GradientData',img_temp_one,'Points',[]);
+            struct_two = struct('ImageData',img_two_bw(v_rows,v_cols),'GradientData',img_temp_two,'Points',[]);
             
             struct_mask(i_inc, j_inc).ImageOne = struct_one;
             struct_mask(i_inc, j_inc).ImageTwo = struct_two;
@@ -88,7 +88,7 @@ function [  ] = fnPark( img_one, img_two, vRC_blocks )
 
 
     %% Extract points containing maximum gradient
-    f_thresh = 500;
+    f_thresh = 100;
     img_one_max_grad = img_grad_one;
     img_one_max_grad = max(max(img_one_max_grad,[],1),[],2);
     img_one_max_grad = repmat(img_one_max_grad, [vRC_block_size, 1, 1]);
@@ -113,59 +113,92 @@ function [  ] = fnPark( img_one, img_two, vRC_blocks )
     img_two_place_RC = permute(img_two_place_RC, [1,3,4,2]);
     
     mat_idx = double([1:(vRC_block_size(1)*vRC_block_size(2))])';
-    mat_idx = repmat(mat_idx, [1, vRC_blocks]);
-    
-    img_one_place_RC = sum(img_one_place_RC.*mat_idx,1);
-    img_two_place_RC = sum(img_two_place_RC.*mat_idx,1);
-    
-    img_one_place_RC = uint64(permute(img_one_place_RC,[2,3,1]));
-    img_two_place_RC = uint64(permute(img_two_place_RC,[2,3,1]));
+%     mat_idx = repmat(mat_idx, [1, vRC_blocks]);
 
-    %% Only include that points where both images are greater than threshold
-    b_img_one = (img_one_place_RC>0);
-    b_img_two = (img_two_place_RC>0);
-    b_include = ((img_one_place_RC>0) & (img_two_place_RC>0));
-    b_include = reshape(b_include, [vRC_blocks(1)*vRC_blocks(2),1]);
-    clear('b_img_one','b_img_two');
+    mat_count_one = zeros(vRC_blocks,'uint16');
+    mat_count_two = zeros(vRC_blocks,'uint16');
     
-    img_one_place_row = mod(img_one_place_RC - 1, vRC_block_size(1))+1; 
-    img_two_place_row = mod(img_two_place_RC - 1, vRC_block_size(1))+1; 
+    for i_inc = 1:vRC_blocks(1)
+        for j_inc = 1:vRC_blocks(2)
 
-    img_one_place_col = idivide(img_one_place_RC - 1, vRC_block_size(1))+1; 
-    img_two_place_col = idivide(img_two_place_RC - 1, vRC_block_size(1))+1; 
-    
-    %% Add back in offsets
-    v_offsets = reshape([struct_mask.Offset],[2,vRC_blocks(1)*vRC_blocks(2)])';
-    img_one_place_row = reshape(img_one_place_row, [vRC_blocks(1)*vRC_blocks(2),1])+v_offsets(:,1);
-    img_two_place_row = reshape(img_two_place_row, [vRC_blocks(1)*vRC_blocks(2),1])+v_offsets(:,1);
+            %% Filter out (make 0) non maximum indexes
+            img_one_place = img_one_place_RC(:,i_inc,j_inc).*mat_idx;
+            img_two_place = img_two_place_RC(:,i_inc,j_inc).*mat_idx;
 
-    img_one_place_col = reshape(img_one_place_col, [vRC_blocks(1)*vRC_blocks(2),1])+v_offsets(:,2);
-    img_two_place_col = reshape(img_two_place_col, [vRC_blocks(1)*vRC_blocks(2),1])+v_offsets(:,2);
+            img_one_place = uint64(img_one_place);
+            img_two_place = uint64(img_two_place);
+
+            %% Only include that points where both images are greater than threshold
+%             b_include = ((img_one_place>0) & (img_two_place>0));
+%             img_one_place = img_one_place(b_include,:);
+%             img_two_place = img_two_place(b_include,:);
+            img_one_place = img_one_place((img_one_place>0),:);
+            img_two_place = img_two_place((img_two_place>0),:);
+
+            img_one_place_row = mod(img_one_place - 1, vRC_block_size(1))+1; 
+            img_two_place_row = mod(img_two_place - 1, vRC_block_size(1))+1; 
+
+            img_one_place_col = idivide(img_one_place - 1, vRC_block_size(1))+1; 
+            img_two_place_col = idivide(img_two_place - 1, vRC_block_size(1))+1; 
+
+            img_one_points = [img_one_place_row, img_one_place_col];
+            img_two_points = [img_two_place_row, img_two_place_col];
+            
+            struct_mask(i_inc,j_inc).ImageOne.Points = img_one_points;
+            struct_mask(i_inc,j_inc).ImageTwo.Points = img_two_points;
+
+            mat_count_one(i_inc,j_inc) = size(img_one_points,1);
+            mat_count_two(i_inc,j_inc) = size(img_two_points,1);
+            
+        end
+    end
+
+    clear('img_one_place_col','img_two_place_col','img_one_place_row','img_two_place_row');
     
-    %% Filter out points not above threshold
-    img_one_place_row = img_one_place_row(b_include,:);
-    img_one_place_col = img_one_place_col(b_include,:);
-    
-    img_two_place_row = img_two_place_row(b_include,:);
-    img_two_place_col = img_two_place_col(b_include,:);
+
     
     figure(1);
     imshow(img_one_bw);
     hold on;
-    plot(img_one_place_col, img_one_place_row, '.r');
     figure(2);
     imshow(img_two_bw);
     hold on;
-    plot(img_two_place_col, img_two_place_row, '.r');
 
     
     figure(3);
     imshow(fnNormalize(img_one_bw_grad));
     hold on;
-    plot(img_one_place_col, img_one_place_row, '.r');
     figure(4);
     imshow(fnNormalize(img_two_bw_grad));
     hold on;
-    plot(img_two_place_col, img_two_place_row, '.r');
+
+    for i_inc = 1:vRC_blocks(1)
+        for j_inc = 1:vRC_blocks(2)
+
+            img_one_points = struct_mask(i_inc,j_inc).ImageOne.Points;
+            v_offset = struct_mask(i_inc,j_inc).Offset;
+            v_offset = repmat(v_offset, size(img_one_points,1));
+            img_one_points = img_one_points + v_offset;
+            
+            figure(3);
+            hold on;
+            plot(img_one_points(:,2), img_one_points(:,1), '.r','MarkerSize',10);
+
+            img_two_points = struct_mask(i_inc,j_inc).ImageTwo.Points;
+            v_offset = struct_mask(i_inc,j_inc).Offset;
+            v_offset = repmat(v_offset, size(img_two_points,1));
+            img_two_points = img_two_points + v_offset;
+            
+            figure(4);
+            hold on;
+            plot(img_two_points(:,2), img_two_points(:,1), '.r','MarkerSize',10);
+            
+        end
+    end
+    
+
+    clear('img_one_points','img_two_points');
+    clear('v_offset');
+    
 end
 
