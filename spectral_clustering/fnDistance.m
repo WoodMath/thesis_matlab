@@ -1,5 +1,5 @@
-function [ mat_out ] = fnDist( img_in, varargin )
-%fnDist Summary of this function goes here
+function [ mat_out ] = fnDistance( img_in, varargin )
+%fnDistance returns Distance matrix of an image
 %   Detailed explanation goes here
 
 %     g=gpuDevice(1);
@@ -13,7 +13,7 @@ function [ mat_out ] = fnDist( img_in, varargin )
         %% Column-major default ie col-1, col-2, col-3
         mat_row = reshape(mat_row, [v1_size,1]);
     else
-        if(strcmpi(varargin{1},'column') || strcmpi(varargin{1},'cols'))
+        if(strcmpi(varargin{1},'column') || strcmpi(varargin{1},'col'))
             %% Column-major ie col-1, col-2, col-3
             mat_row = reshape(mat_row, [v1_size,1]);
         else
@@ -21,7 +21,7 @@ function [ mat_out ] = fnDist( img_in, varargin )
                 %% Row-major ie col-1, col-2, col-3
                 mat_row = reshape(mat_row', [v1_size,1]);
             else
-                error('Invalid type of stride');
+                error('Invalid type of stride: Must be ''row'' or ''column''. ');
             end
         end
     end
