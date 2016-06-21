@@ -1,6 +1,11 @@
 clear all;
 close all;
 
+s_dir_functions = './functions';
+if(isempty(regexp(path,s_dir_functions,'once')))
+    addpath(s_dir_functions);
+end
+
 im_disp = imread('./tsukuba/truedisp.row3.col3.pgm');
 figure(1);
 imshow(im_disp);
@@ -11,7 +16,7 @@ sfigure(2);
 imshow(im_mid);
 set(gca, 'Visible', 'on');
 
-fnVisualize(im_mid);
+%% fnVisualize(im_mid);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
