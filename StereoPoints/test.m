@@ -1,6 +1,11 @@
 clear all;
 close all;
 
+s_dir_functions = './functions';
+if(isempty(regexp(path,s_dir_functions,'once')))
+    addpath(s_dir_functions);
+end
+
 %% Add Points
 st_out = fnMenuMain();
 
