@@ -19,7 +19,7 @@ figure;
 imshow(mat_sim);
 
 
-imshow(uint8(sim*255));
+imshow(uint8(mat_sim*255));
 
 img = reshape(img, [v3_size(1)*v3_size(2),1,v3_size(3)]);
 img = permute(img, [1,3,2]);
