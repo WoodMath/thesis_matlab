@@ -1,25 +1,23 @@
 close all;
 clear all;
-img = imread('colorapp_pep.png');
 
-v3_size = size(img);
+isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
-mat_image = magic(10);
+if(isOctave)
+    mat_img = loadimage('colorapp_pep.png');
+else
+    mat_img = imread('fruit-basket.png');
+end
 
-mat_sqr = fnDistance(mat_image,'column','travel');
-mat_sqr = mat_sqr/max(max(mat_sqr));
-mat_sqr = uint8(mat_sqr*255);
-figure;
-imshow(mat_sqr);
-
-mat_sim = fnSimilarity(repmat(mat_image, [1,1,3]),'column','gaussian',10);
-mat_sim = mat_sim/max(max(max(mat_sim)));
-mat_sim = uint8(mat_sim*255);
-figure;
-imshow(mat_sim);
+mat_seg = fnSegment(mat_img);
+% v3_size = size(img);
 
 
-imshow(uint8(mat_sim*255));
-
-img = reshape(img, [v3_size(1)*v3_size(2),1,v3_size(3)]);
-img = permute(img, [1,3,2]);
+% mat_image = magic(10);
+% mat_image = repmat(mat_image, [1,1,3]);
+% 
+% mat_dist = fnDistance(mat_image,'column','gaussian',10);
+% mat_sim = fnSimilarity(mat_image,'column','gaussian',10);
+% 
+% f_sim_weight = 0.8;
+% mat_use = mat_dist.^(1-f_sim_weight).*mat_sim.^(f_sim_weight);

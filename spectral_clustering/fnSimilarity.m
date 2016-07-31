@@ -2,7 +2,6 @@ function [ mat_out ] = fnSimilarity( img_in, varargin )
 %fnSimilarity returns Similarity matrix of an image
 %   Detailed explanation goes here
 
-%     g=gpuDevice(1);
 
     v3_size = size(img_in);
     v2_size = [size(img_in,1), size(img_in,2)];
@@ -65,7 +64,7 @@ function [ mat_out ] = fnSimilarity( img_in, varargin )
                         if(isnumeric(varargin{2}))
                             fSigma = varargin{2};
                         else
-                            error('Invalid type of distance: Must be ''travel'' (dX+dY), ''square'' (dX^2+dY^2), ''euclidean'' ([dX^2+dY^2]^0.5), ''gaussian'' (e^[-(dX^2+dY^2)/2/sigma^2])or ommitted (default of ''euclidean''). ');
+                            error('Invalid type of similarity: Must be ''travel'' (dX+dY), ''square'' (dX^2+dY^2), ''euclidean'' ([dX^2+dY^2]^0.5), ''gaussian'' (e^[-(dX^2+dY^2)/2/sigma^2]) or ommitted (default of ''gaussian''). ');
                         end
                     end
                     mat_dist = mat_dist.^2;

@@ -25,10 +25,9 @@ function [ mat_out ] = fnDistance( img_in, varargin )
             end
         end
     end
-    gmat_row = mat_row;
-%     gmat_row = gpuArray(mat_row);
-    gmat_row = repmat(gmat_row, [1,v1_size]);
-    gmat_row_diff = abs(gmat_row - gmat_row');
+    
+    mat_row = repmat(mat_row, [1,v1_size]);
+    mat_row_diff = abs(mat_row - mat_row');
     
     mat_col = repmat(1:size(img_in,2), [size(img_in,1),1]);
     if(nargin==1)
@@ -47,34 +46,54 @@ function [ mat_out ] = fnDistance( img_in, varargin )
             end
         end
     end
-    gmat_col = mat_col;
-%     gmat_col = gpuArray(mat_col);
-    gmat_col = repmat(gmat_col, [1,v1_size]);
-    gmat_col_diff = abs(gmat_col - gmat_col');
-
     
+    mat_col = repmat(mat_col, [1,v1_size]);
+    mat_col_diff = abs(mat_col - mat_col');
+
     if(nargin==1 || length(varargin)==1)
-        gmat_dist = gmat_row_diff.^2 + gmat_col_diff.^2;
-        gmat_dist = gmat_dist.^0.5;
+        mat_dist = mat_row_diff.^2 + mat_col_diff.^2;
+        mat_dist = mat_dist.^0.5;
     else
         if(strcmpi(varargin{2},'travel'))
-            gmat_dist = gmat_row_diff + gmat_col_diff;
+            mat_dist = mat_row_diff + mat_col_diff;
         else
             if(strcmpi(varargin{2},'square'))
-                gmat_dist = gmat_row_diff.^2 + gmat_col_diff.^2;
+                mat_dist = mat_row_diff.^2 + mat_col_diff.^2;
             else
                 if(strcmpi(varargin{2},'euclidean'))
-                    gmat_dist = gmat_row_diff.^2 + gmat_col_diff.^2;
-                    gmat_dist = gmat_dist.^0.5;
+                    mat_dist = mat_row_diff.^2 + mat_col_diff.^2;
+                    mat_dist = mat_dist.^0.5;
                 else
-                    error('Invalid type of distance: Must be ''travel'' (dX+dY), ''square'' (dX^2+dY^2), ''euclidean'' ([dX^2+dY^2]^0.5), or ommitted (default of ''euclidean''). ');
+
+                    fSigma = 1;
+                    if(strcmpi(varargin{2},'gaussian'))
+                        if(length(varargin) == 2)
+                            fSigma = 1;
+                        else                            
+                            if(isnumeric(varargin{3}))
+                                fSigma = varargin{3};
+                            else
+                                error(' When using ''gaussian'' kernel 4th, supplied argument must be numeric.');
+                            end
+                        end
+                        
+                    else
+                        if(isnumeric(varargin{2}))
+                            fSigma = varargin{2};
+                        else
+                            error('Invalid type of distance: Must be ''travel'' (dX+dY), ''square'' (dX^2+dY^2), ''euclidean'' ([dX^2+dY^2]^0.5), ''gaussian'' (e^[-(dX^2+dY^2)/2/sigma^2]) or ommitted (default of ''gaussian''). ');
+                        end
+                    end
+                    mat_dist = mat_row_diff.^2 + mat_col_diff.^2;
+                    mat_dist = exp(-(mat_dist/2/fSigma^2));
+
                 end
             end
         end
     end
     
 
-    mat_out = gmat_dist;
+    mat_out = mat_dist;
 %     mat_out = gather(gmat_dist);
 %     reset(g);
 
