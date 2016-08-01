@@ -6,8 +6,10 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 if(isOctave)
     mat_img = loadimage('colorapp_pep.png');
 else
-    mat_img = imread('fruit-basket.png');
+    mat_img = imread('colorapp_pep.png');
 end
+
+%mat_img=imread('120px-Povray_logo_sphere.png');
 
 mat_seg = fnSegment(mat_img);
 % v3_size = size(img);
