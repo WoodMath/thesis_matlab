@@ -52,13 +52,30 @@ if det(U)< 0
     s= - s;
 end
 
-	disp([' Q = ', num2str(Q)]);
-	disp([' U = ', num2str(U)]);
-	disp([' B = ', num2str(B)]);
+	disp([' P = ']);
+    disp(num2str(P));
+    disp(' ');
+
+	disp([' Q = ']);
+    disp(num2str(Q));
+    disp(' ');
+    
+	disp([' U = ']);
+    disp(num2str(U));
+    disp(' ');
+
+	disp([' B = ']);
+    disp(num2str(B));
+    disp(' ');
+
 % sanity check
 if (norm(Q-U*B)>1e-10) & (norm(Q+U*B)>1e-10)
     error('Something wrong with the QR factorization.'); end
 
+    disp([' norm(Q-U*B) = ', num2str(norm(Q-U*B))]);
+    disp([' norm(Q+U*B) = ', num2str(norm(Q+U*B))]);
+    disp(' ');
+    
 R = U';
 t = B*s;
 A = inv(B);
